@@ -1,6 +1,16 @@
-import Link from 'next/link'
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 
 export default function CerrarSesionPage() {
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false })
+    router.push('/login')
+  }
+
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
@@ -11,18 +21,18 @@ export default function CerrarSesionPage() {
         </p>
 
         <div className="flex flex-col gap-3">
-          <a
-            href="/api/auth/signout?callbackUrl=/login"
-            className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+          <button
+            onClick={handleSignOut}
+            className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors cursor-pointer"
           >
             Sí, cerrar sesión
-          </a>
-          <Link
-            href="/admin"
-            className="w-full bg-slate-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-slate-300 transition-colors"
+          </button>
+          <button
+            onClick={() => router.push('/admin')}
+            className="w-full bg-slate-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-slate-300 transition-colors cursor-pointer"
           >
             No, volver al panel
-          </Link>
+          </button>
         </div>
       </div>
     </div>
