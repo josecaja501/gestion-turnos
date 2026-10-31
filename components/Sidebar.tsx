@@ -67,7 +67,7 @@ export default function Sidebar({ esAdmin, userName, userEmail }: SidebarProps) 
       <div className="p-4 border-t border-slate-700">
         <p className="text-sm text-slate-300 mb-1">{userName}</p>
         <p className="text-xs text-slate-500 mb-3">{userEmail}</p>
-        <Link href="/api/auth/signout" className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">
+        <Link href="/cerrar-sesion" className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">
           🚪 Cerrar sesión
         </Link>
       </div>
