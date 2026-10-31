@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Turno {
+  MANANA
+  TARDE
+  NOCHE
+}
+
+enum Rol {
+  ADMINISTRADOR
+  TECNICO
+}
+
+enum EstadoTarea {
+  PENDIENTE
+  REALIZADA
+  NO_REALIZADA
+}
+
+model Usuario {
+  id        String   @id @default(uuid())
+  nombre    String
+  email     String   @unique
+  password  String
+  rol       Rol      @default(TECNICO)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  informes Informe[]
+  tareas   TareaDiaria[]
+}
+
+model Informe {
+  id        String   @id @default(uuid())
+  fecha     DateTime @db.Date
+  turno     Turno
+  tecnicoId String
+  novedades String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tecnico Usuario @relation(fields: [tecnicoId], references: [id])
+
+  @@index([fecha, turno])
+}
+
+model TareaDiaria {
+  id          String      @id @default(uuid())
+  fecha       DateTime    @db.Date
+  turno       Turno
+  descripcion String      @db.Text
+  estado      EstadoTarea @default(PENDIENTE)
+  tecnicoId   String?
+  notas       String?     @db.Text
+  horaFirma   DateTime?
+  porcentaje  Int         @default(0)
+  ratificada  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  tecnico Usuario? @relation(fields: [tecnicoId], references: [id])
+
+  @@index([fecha, turno])
+}

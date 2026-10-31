@@ -1,12 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     agentFeedback: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Desactivamos estas opciones experimentales que causan conflicto con next-auth
+  cacheComponents: false,
+  partialPrefetching: false,
   turbopack: {
     rules: {
       "*.css": {
