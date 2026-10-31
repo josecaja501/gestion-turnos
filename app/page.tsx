@@ -1,10 +1,16 @@
 import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
   const session = await auth()
-  const esAdmin = session?.user?.rol === 'ADMINISTRADOR'
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  const esAdmin = session.user.rol === 'ADMINISTRADOR'
 
   const totalTareas = await prisma.tareaDiaria.count()
   const tareasPendientes = await prisma.tareaDiaria.count({ where: { estado: 'PENDIENTE' } })
@@ -65,7 +71,7 @@ export default async function DashboardPage() {
               </Link>
 
               <Link href="/admin/informes" className="bg-orange-600 text-white p-6 rounded-xl shadow-lg hover:bg-orange-700 transition-colors">
-                <h3 className="text-xl font-bold mb-2"> Informes</h3>
+                <h3 className="text-xl font-bold mb-2">📊 Informes</h3>
                 <p className="text-orange-100">Generar informes en PDF</p>
               </Link>
             </>
