@@ -1,40 +1,67 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import GoodbyeScreen from '@/components/GoodbyeScreen'
 
 export default function CerrarSesionPage() {
   const router = useRouter()
+  const [userData, setUserData] = useState<{ name: string; role: string } | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleSignOut = async () => {
+  useEffect(() => {
+    // Obtener los datos del usuario antes de cerrar sesión
+    const fetchSession = async () => {
+      try {
+        const res = await fetch('/api/auth/session')
+        const session = await res.json()
+        
+        if (session?.user) {
+          setUserData({
+            name: session.user.nombre || session.user.email || 'Usuario',
+            role: session.user.rol === 'ADMINISTRADOR' ? 'Administrador' : 'Técnico'
+          })
+        } else {
+          // Si no hay sesión, redirigir directamente al login
+          router.push('/login')
+        }
+      } catch (err) {
+        console.error("Error obteniendo sesión", err)
+        router.push('/login')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSession()
+  }, [router])
+
+  const handleSignOutAndRedirect = async () => {
     await signOut({ redirect: false })
     router.push('/login')
   }
 
-  return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-        <div className="text-6xl mb-4">👋</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">¿Seguro que quieres salir?</h1>
-        <p className="text-gray-500 mb-8">
-          Vas a cerrar tu sesión en el sistema de Gestión de Turnos.
-        </p>
-
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={handleSignOut}
-            className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors cursor-pointer"
-          >
-            Sí, cerrar sesión
-          </button>
-          <button
-            onClick={() => router.push('/admin')}
-            className="w-full bg-slate-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-slate-300 transition-colors cursor-pointer"
-          >
-            No, volver al panel
-          </button>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-blue-200">Preparando despedida...</p>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  if (userData) {
+    return (
+      <GoodbyeScreen 
+        userName={userData.name} 
+        userRole={userData.role} 
+        onComplete={handleSignOutAndRedirect} 
+      />
+    )
+  }
+
+  return null
 }
