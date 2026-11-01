@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Fondo azul redondeado -->
+  <rect width="512" height="512" rx="110" fill="#1e40af"/>
+  
+  <!-- Base del calendario blanca -->
+  <rect x="96" y="140" width="320" height="280" rx="30" fill="#ffffff"/>
+  
+  <!-- Pestañas superiores del calendario -->
+  <path d="M160 100v40M352 100v40" stroke="#ffffff" stroke-width="28" stroke-linecap="round"/>
+  
+  <!-- Línea divisoria del calendario -->
+  <path d="M96 220h320" stroke="#1e40af" stroke-width="20"/>
+  
+  <!-- Check verde de "Tarea completada" -->
+  <path d="M180 310l50 50 100-100" stroke="#10b981" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

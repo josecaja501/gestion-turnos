@@ -5,6 +5,11 @@ import Providers from '@/components/Providers'
 export const metadata: Metadata = {
   title: 'Gestión Turnos',
   description: 'Sistema de gestión de turnos',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
 }
 
 export default function RootLayout({
