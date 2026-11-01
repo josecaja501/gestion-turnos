@@ -101,7 +101,7 @@ export default function MobileMenu({ esAdmin, userName, userEmail }: MobileMenuP
 
             <div className="p-4 border-t border-slate-700">
               <Link
-                href="/api/auth/signout"
+                href="/cerrar-sesion"
                 className="flex items-center justify-center gap-2 px-4 py-3 text-sm text-white bg-red-600 hover:bg-red-700 rounded-lg font-medium"
               >
                 <span>🚪</span> Cerrar sesión
