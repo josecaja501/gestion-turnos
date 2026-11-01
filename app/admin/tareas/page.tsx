@@ -35,8 +35,13 @@ export default async function TareasPage({ searchParams }: { searchParams: Promi
   const session = await auth()
   const esAdmin = session?.user?.rol === 'ADMINISTRADOR'
 
-  // Por defecto, ocultamos las tareas ya ratificadas para mantener la pantalla limpia
-  const where: any = { ratificada: historial === 'true' ? undefined : false }
+  // CORRECCIÓN: Construimos el filtro condicionalmente
+  const where: any = {}
+  
+  // Si NO estamos viendo el historial, solo mostramos las NO ratificadas
+  if (historial !== 'true') {
+    where.ratificada = false
+  }
   
   if (estado && estado !== 'TODOS') where.estado = estado
   if (tecnicoId && tecnicoId !== 'TODOS') where.tecnicoId = tecnicoId
