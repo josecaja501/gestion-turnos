@@ -35,12 +35,11 @@ export default async function TareasPage({ searchParams }: { searchParams: Promi
   const session = await auth()
   const esAdmin = session?.user?.rol === 'ADMINISTRADOR'
 
-  // CORRECCIÓN: Construimos el filtro condicionalmente
+  // Filtro condicional: si NO es historial, solo mostramos no ratificadas
   const where: any = {}
   
-  // Si NO estamos viendo el historial, solo mostramos las NO ratificadas
   if (historial !== 'true') {
-    where.ratificada = false
+    where.AND = [{ ratificada: { equals: false } }]
   }
   
   if (estado && estado !== 'TODOS') where.estado = estado
