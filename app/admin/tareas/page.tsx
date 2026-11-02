@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import ToastHandler from '@/components/ToastHandler'
+// CORRECCIÓN: Importamos el namespace 'Prisma' y el enum 'EstadoTarea'
+import { Prisma, EstadoTarea } from '@prisma/client'
 
 async function eliminarTarea(formData: FormData) {
   'use server'
@@ -35,15 +37,21 @@ export default async function TareasPage({ searchParams }: { searchParams: Promi
   const session = await auth()
   const esAdmin = session?.user?.rol === 'ADMINISTRADOR'
 
-  // Filtro condicional: si NO es historial, solo mostramos no ratificadas
-  const where: any = {}
+  // CORRECCIÓN: Usamos el tipo exacto dentro del namespace Prisma
+  const where: Prisma.TareaDiariaWhereInput = {}
   
   if (historial !== 'true') {
-    where.AND = [{ ratificada: { equals: false } }]
+    where.ratificada = false
   }
   
-  if (estado && estado !== 'TODOS') where.estado = estado
-  if (tecnicoId && tecnicoId !== 'TODOS') where.tecnicoId = tecnicoId
+  if (estado && estado !== 'TODOS') {
+    // Forzamos el tipo a EstadoTarea (Enum) para que TypeScript no se queje del string
+    where.estado = estado as EstadoTarea
+  }
+  
+  if (tecnicoId && tecnicoId !== 'TODOS') {
+    where.tecnicoId = tecnicoId
+  }
 
   const tareas = await prisma.tareaDiaria.findMany({
     where,
@@ -56,7 +64,8 @@ export default async function TareasPage({ searchParams }: { searchParams: Promi
     orderBy: { nombre: 'asc' }
   })
 
-  const getEstadoColor = (estado: string, ratificada: boolean) => {
+  // Aceptamos boolean | null | undefined para evitar el error de asignación de TypeScript
+  const getEstadoColor = (estado: string, ratificada: boolean | null | undefined) => {
     if (ratificada) return 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
     switch (estado) {
       case 'REALIZADA': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
@@ -65,7 +74,7 @@ export default async function TareasPage({ searchParams }: { searchParams: Promi
     }
   }
 
-  const getEstadoTexto = (estado: string, ratificada: boolean) => {
+  const getEstadoTexto = (estado: string, ratificada: boolean | null | undefined) => {
     if (ratificada) return '✓ Ratificada'
     switch (estado) {
       case 'REALIZADA': return 'Pendiente de Ratificar'
