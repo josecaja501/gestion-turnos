@@ -136,33 +136,59 @@ export default function InformesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-400 -m-4 md:-m-6 p-4 md:p-6">
-      <div className="max-w-2xl mx-auto mt-4 md:mt-10 bg-white p-6 md:p-8 rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-gray-900">Generar Informes</h1>
+    <div className="min-h-screen bg-slate-400 dark:bg-gray-900 -m-4 md:-m-6 p-4 md:p-6 transition-colors duration-300">
+      <div className="max-w-2xl mx-auto mt-4 md:mt-10 bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+        <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Generar Informes</h1>
         
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold text-gray-900 mb-1">Fecha Inicio</label>
-              <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-900 font-medium focus:border-blue-500 focus:outline-none" />
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Fecha Inicio</label>
+              <input 
+                type="date" 
+                value={fechaInicio} 
+                onChange={(e) => setFechaInicio(e.target.value)} 
+                className="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white font-medium focus:border-blue-500 focus:outline-none transition-colors" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-900 mb-1">Fecha Fin</label>
-              <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-900 font-medium focus:border-blue-500 focus:outline-none" />
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Fecha Fin</label>
+              <input 
+                type="date" 
+                value={fechaFin} 
+                onChange={(e) => setFechaFin(e.target.value)} 
+                className="w-full px-4 py-2 border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white font-medium focus:border-blue-500 focus:outline-none transition-colors" 
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-            <button onClick={() => generarPDF('tareas')} disabled={loading} className="bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-900 font-bold transition-colors disabled:bg-gray-400 shadow-sm">
+            <button 
+              onClick={() => generarPDF('tareas')} 
+              disabled={loading} 
+              className="bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 dark:hover:bg-blue-900 font-bold transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:text-gray-200 shadow-sm"
+            >
               {loading ? 'Generando...' : '📄 PDF Tareas'}
             </button>
-            <button onClick={() => generarPDF('novedades')} disabled={loading} className="bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-900 font-bold transition-colors disabled:bg-gray-400 shadow-sm">
+            <button 
+              onClick={() => generarPDF('novedades')} 
+              disabled={loading} 
+              className="bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 dark:hover:bg-blue-900 font-bold transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:text-gray-200 shadow-sm"
+            >
               {loading ? 'Generando...' : '📄 PDF Novedades'}
             </button>
-            <button onClick={() => generarExcel('tareas')} disabled={loading} className="bg-emerald-700 text-white py-3 rounded-lg hover:bg-emerald-900 font-bold transition-colors disabled:bg-gray-400 shadow-sm">
-              {loading ? 'Generando...' : ' Excel Tareas'}
+            <button 
+              onClick={() => generarExcel('tareas')} 
+              disabled={loading} 
+              className="bg-emerald-700 text-white py-3 rounded-lg hover:bg-emerald-800 dark:hover:bg-emerald-900 font-bold transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:text-gray-200 shadow-sm"
+            >
+              {loading ? 'Generando...' : '📊 Excel Tareas'}
             </button>
-            <button onClick={() => generarExcel('novedades')} disabled={loading} className="bg-emerald-700 text-white py-3 rounded-lg hover:bg-emerald-900 font-bold transition-colors disabled:bg-gray-400 shadow-sm">
+            <button 
+              onClick={() => generarExcel('novedades')} 
+              disabled={loading} 
+              className="bg-emerald-700 text-white py-3 rounded-lg hover:bg-emerald-800 dark:hover:bg-emerald-900 font-bold transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:text-gray-200 shadow-sm"
+            >
               {loading ? 'Generando...' : '📊 Excel Novedades'}
             </button>
           </div>
